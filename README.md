@@ -5,6 +5,7 @@ deciding whether a change to it is an improvement.
 
 The harness is the point. The service exists to give it something to measure.
 
+**[▶ 5-minute video walkthrough of the eval results](https://drive.google.com/file/d/1xiQlFmjgxW4OnE1SJ6t6LyQU-Xr5LfiG/view?usp=sharing)**
 --- 
 
 ## Start here — how I worked
