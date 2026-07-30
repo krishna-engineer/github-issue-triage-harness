@@ -1,0 +1,19 @@
+{
+  "run_id": "gpt-5-nano",
+  "finished_at": "2026-07-30T17:19:35.794089+00:00",
+  "golden_set_path": "/Users/krishnakumar_mishra/projects/github-issue-triage-harness/data/golden_set.jsonl",
+  "num_issues": 20,
+  "num_runs": 2,
+  "run_config": {
+    "model": "gpt-5-nano",
+    "prompt_version": "v1",
+    "output_mode": "prompt_only",
+    "temperature": 1,
+    "max_completion_tokens": 1000
+  },
+  "counts": {
+    "total": 40,
+    "ok": 39,
+    "truncated": 1
+  }
+}
