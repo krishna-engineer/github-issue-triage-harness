@@ -5,7 +5,16 @@ import os
 from openai import OpenAI
 
 load_dotenv()
-_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+_client = None
+
+def _get_client():
+    """Created on first call, not at import. Importing this module must not
+    require a key - score and compare have no reason to need one."""
+    global _client
+    if _client is None:
+        _client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return _client
 
 def call_llm(system_prompt: str,
              user_content: str,
@@ -30,7 +39,7 @@ def call_llm(system_prompt: str,
     start = time.perf_counter()
 
     try:
-        resp = _client.chat.completions.create(**kwargs)
+        resp = _get_client().chat.completions.create(**kwargs)
     except Exception as e:
         return {
             "text": None,

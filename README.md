@@ -37,8 +37,8 @@ Two real runs are committed under `runs/`, so every scoring and
 comparison command works offline.
 
 ```bash
-harness score   runs/<4o-mini run>.jsonl
-harness compare runs/<4o-mini run>.jsonl runs/<nano run>.jsonl
+harness score   runs/gpt-4o-mini.jsonl
+harness compare runs/gpt-4o-mini.jsonl runs/gpt-5-nano.jsonl
 ```
 
 ### Produce a new run — needs `OPENAI_API_KEY`, costs well under $0.01
