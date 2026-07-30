@@ -26,8 +26,11 @@ reasoning is what the rest of the project is built on.
 ## Quickstart
 
 ```bash
-git clone <repo> && cd github-issue-triage-harness
-python3 -m venv .venv && source .venv/bin/activate
+git clone https://github.com/krishna-engineer/github-issue-triage-harness.git
+cd github-issue-triage-harness
+python3.11 -m venv .venv      # 3.11+ required
+source .venv/bin/activate
+pip install --upgrade pip     # editable install needs pip >= 21.3
 pip install -e .
 ```
 
