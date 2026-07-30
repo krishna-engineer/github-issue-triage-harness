@@ -2,6 +2,12 @@
 
 - Wrote problem statement with pen and paper as it helps me giving a complete and visual view of the problem and context around it.
 
+[Problem understanding, page 1](docs/getting_started_1.jpeg)
+
+[Problem understanding, page 2](docs/getting_started_2.jpeg)
+
+[Problem understanding, page 3](docs/getting_started_3.jpeg)
+
 - After that, I went to meat of the problem statement: metrics to calculate. Building service was surely an easy work than brainstorming on metrics part. I took around 30% of time in deciding metrics and how to measure them.
 
 - Then I started with building LLM core service:
