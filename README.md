@@ -25,12 +25,16 @@ reasoning is what the rest of the project is built on.
 
 ## Quickstart
 
+Requires **Python 3.11+**. On macOS the system `python3` is 3.9, which will fail — the OpenAI SDK itself needs 3.10+.
+
 ```bash
 git clone https://github.com/krishna-engineer/github-issue-triage-harness.git
 cd github-issue-triage-harness
-python3.11 -m venv .venv      # 3.11+ required
+
+# no 3.11?  brew install python@3.11
+python3.11 -m venv .venv      
 source .venv/bin/activate
-pip install --upgrade pip     # editable install needs pip >= 21.3
+pip install --upgrade pip     
 pip install -e .
 ```
 
