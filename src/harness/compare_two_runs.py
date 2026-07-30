@@ -9,7 +9,25 @@
 import json
 from pathlib import Path
 
-from .config import WEIGHTS
+from .config import WEIGHTS, PRICES
+
+
+def cost_summary(results, manifest):
+    """Dollars for one run. Tokens counted over ALL results - you pay for
+    failed calls too, and truncated calls are the worst case: full token
+    budget burned, nothing usable returned."""
+    model = manifest["run_config"]["model"]
+    price = PRICES.get(model)
+    in_tok = sum(r["usage"]["input_tokens"] for r in results)
+    out_tok = sum(r["usage"]["output_tokens"] for r in results)
+    usable = sum(1 for r in results if r["error_status"] == "ok")
+    wasted = sum(r["usage"]["output_tokens"] for r in results
+                 if r["error_status"] != "ok")
+    usd = None
+    if price:
+        usd = (in_tok * price["input"] + out_tok * price["output"]) / 1_000_000
+    return {"model": model, "usd": usd, "calls": len(results),
+            "usable": usable, "wasted_out": wasted}
 
 
 def load_run_response(path):
@@ -115,6 +133,10 @@ def compare(path_a, path_b, golden_path):
         else:
             agreed += 1
 
+    spend_a = cost_summary(list(a.values()), manifest_a)
+    spend_b = cost_summary(list(b.values()), manifest_b)
+
+
     w = WEIGHTS["needs_human"]
     label = lambda m: f"{m['run_config']['model']}/{m['run_config']['prompt_version']}"
 
@@ -137,6 +159,22 @@ def compare(path_a, path_b, golden_path):
           f"({broke_missed} missed, {broke_false} false)   cost added +{cost_added}")
     print(f"  net by COUNT        {fixed - broke:>+4}")
     print(f"  net by COST         {net:>+4}   -> {verdict}")
+
+
+    print("\nspend:")
+    print(f"{'':22}{'A':>10}{'B':>10}")
+    print(f"{'model':22}{spend_a['model']:>10}{spend_b['model']:>10}")
+    if spend_a["usd"] is not None and spend_b["usd"] is not None:
+        print(f"{'$ total':22}{spend_a['usd']:>10.4f}{spend_b['usd']:>10.4f}")
+        print(f"{'$ per usable answer':22}"
+              f"{spend_a['usd'] / spend_a['usable']:>10.5f}"
+              f"{spend_b['usd'] / spend_b['usable']:>10.5f}")
+    print(f"{'usable / calls':22}"
+          f"{f'{spend_a[chr(117)]}':>10}" if False else
+          f"{'usable / calls':22}"
+          f"{str(spend_a['usable']) + '/' + str(spend_a['calls']):>10}"
+          f"{str(spend_b['usable']) + '/' + str(spend_b['calls']):>10}")
+    print(f"{'wasted output tokens':22}{spend_a['wasted_out']:>10,}{spend_b['wasted_out']:>10,}")
     print("----" * 10)
 
 

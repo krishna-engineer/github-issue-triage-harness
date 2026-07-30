@@ -1,7 +1,7 @@
 import json
 from collections import Counter
 
-from .config import WEIGHTS
+from .config import WEIGHTS, PRICES
 
 
 def load_gold(path):
@@ -51,6 +51,12 @@ def score(results_path, golden_path):
             total_cost += w["false_escalation"]
 
     n = len(scorable)
+    model = results[0]["run_config"]["model_name"]
+    price = PRICES.get(model)
+    in_tok = sum(r["usage"]["input_tokens"] for r in results)
+    out_tok = sum(r["usage"]["output_tokens"] for r in results)
+    usd = (in_tok * price["input"] + out_tok * price["output"]) / 1_000_000 if price else None
+
     print("----" * 10)
 
     if n == 0:
@@ -88,6 +94,14 @@ def score(results_path, golden_path):
         # actually answered fewer questions.
         print("  ^ cost above is computed on a reduced set - NOT comparable "
               "to a run\n    with higher validity. Use `compare` instead.")
+
+    print(f"\ncost ({model}):")
+    print(f"  tokens             : {in_tok:,} in / {out_tok:,} out")
+    if usd is None:
+        print(f"  no price for {model!r} in PRICES - cost not computed")
+    else:
+        print(f"  total              : ${usd:.4f}")
+        print(f"  per usable result  : ${usd / n:.5f}")
     print("----" * 10)
 
     return {"total_cost": total_cost, "missed_escalation": missed,

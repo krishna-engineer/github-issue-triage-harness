@@ -1,7 +1,16 @@
 [project]
-name = "triage"
+name = "github-issue-triage-harness"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic==2.13.4",
+    "openai==2.50.0",
+    "python-dotenv==1.2.2"
+]
+
+
+[project.scripts]
+harness = "harness.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

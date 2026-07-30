@@ -3,6 +3,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # config.py -> harness/ -> src/ -> project root
 
+# USD per 1M tokens. Verify against the provider's pricing page - these change.
+PRICES = {
+    "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+    "gpt-5-nano":  {"input": 0.05, "output": 0.40},
+}
+
 RUN_CONFIG = {
     "model": "gpt-5-nano",
     # "model": "gpt-4o-mini",
