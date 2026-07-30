@@ -27,7 +27,7 @@ reasoning is what the rest of the project is built on.
 
 ```bash
 git clone <repo> && cd github-issue-triage-harness
-python -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
 
